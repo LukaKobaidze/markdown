@@ -1,0 +1,17 @@
+.layout {
+  grid-template-areas:
+    'sidebar header'
+    'sidebar main';
+}
+
+.sidebar {
+  grid-area: sidebar;
+}
+
+.header {
+  grid-area: header;
+}
+
+.main {
+  grid-area: main;
+}

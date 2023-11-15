@@ -1,0 +1,19 @@
+.text {
+  font-size: 0.875em;
+  line-height: 1.5em;
+
+  &--slab-regular {
+    font-family: 'Roboto Slab', sans-serif;
+    font-weight: 400;
+  }
+
+  &--slab-bold {
+    font-family: 'Roboto Slab', sans-serif;
+    font-weight: 700;
+  }
+
+  &--mono-regular {
+    font-family: 'Roboto Mono', sans-serif;
+    font-weight: 400;
+  }
+}

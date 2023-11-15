@@ -1,0 +1,55 @@
+.heading {
+  &--1 {
+    font-family: 'Roboto Slab', sans-serif;
+    font-size: 2em;
+    font-weight: 700;
+  }
+
+  &--2 {
+    font-family: 'Roboto Slab', sans-serif;
+    font-size: 1.75em;
+    font-weight: 300;
+  }
+
+  &--3 {
+    font-family: 'Roboto Slab', sans-serif;
+    font-size: 1.5em;
+    font-weight: 700;
+  }
+
+  &--4 {
+    font-family: 'Roboto Slab', sans-serif;
+    font-size: 1.25em;
+    font-weight: 700;
+  }
+
+  &--5 {
+    font-family: 'Roboto Slab', sans-serif;
+    font-size: 1em;
+    font-weight: 700;
+  }
+
+  &--6 {
+    font-family: 'Roboto Slab', sans-serif;
+    font-size: 0.875em;
+    font-weight: 700;
+  }
+
+  &--M {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9375em;
+    font-weight: 400;
+  }
+
+  &--S {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.875em;
+    font-size: 500;
+  }
+
+  &--S-light {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.8125em;
+    font-weight: 300;
+  }
+}
