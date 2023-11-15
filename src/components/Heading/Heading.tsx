@@ -4,7 +4,7 @@ type HeadingLevel = '1' | '2' | '3' | '4' | '5' | '6';
 
 interface Props extends React.HTMLAttributes<HTMLHeadingElement> {
   level: HeadingLevel;
-  styleLevel?: HeadingLevel | 'M' | 'S' | 'S-light';
+  styleLevel?: HeadingLevel;
 }
 
 export default function Heading(props: Props) {

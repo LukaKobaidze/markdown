@@ -9,3 +9,4 @@ export { default as IconLightMode } from './icon-light-mode.svg?react';
 export { default as IconMenu } from './icon-menu.svg?react';
 export { default as IconSave } from './icon-save.svg?react';
 export { default as IconShowPreview } from './icon-show-preview.svg?react';
+export { default as Logo } from './logo.svg?react';

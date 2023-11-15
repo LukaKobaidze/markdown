@@ -1,0 +1,12 @@
+@use '../Text/Text.module.scss';
+
+.button {
+  @extend .text--M;
+  background-color: var(--clr-button);
+  padding: 0.6666666666666667em 1.066666666666667em;
+  border-radius: 0.2666666666666667em;
+
+  &:hover {
+    background-color: var(--clr-button-hover);
+  }
+}

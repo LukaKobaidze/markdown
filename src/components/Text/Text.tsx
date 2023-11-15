@@ -3,7 +3,7 @@ import styles from './Text.module.scss';
 interface Props
   extends React.HTMLAttributes<HTMLParagraphElement | HTMLSpanElement> {
   as: 'span' | 'p';
-  variant: 'slab-regular' | 'slab-bold' | 'mono-regular';
+  variant: 'M' | 'S' | 'S-light' | 'slab-regular' | 'slab-bold' | 'mono-regular';
 }
 
 export default function Text(props: Props) {

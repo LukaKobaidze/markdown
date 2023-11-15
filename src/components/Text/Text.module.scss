@@ -1,18 +1,40 @@
 .text {
-  font-size: 0.875em;
-  line-height: 1.5em;
+  &--M {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9375em;
+    font-weight: 400;
+  }
+
+  &--S {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.875em;
+    font-weight: 500;
+    letter-spacing: 2px;
+  }
+
+  &--S-light {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.8125em;
+    font-weight: 300;
+  }
 
   &--slab-regular {
+    font-size: 0.875em;
+    line-height: 1.5em;
     font-family: 'Roboto Slab', sans-serif;
     font-weight: 400;
   }
 
   &--slab-bold {
+    font-size: 0.875em;
+    line-height: 1.5em;
     font-family: 'Roboto Slab', sans-serif;
     font-weight: 700;
   }
 
   &--mono-regular {
+    font-size: 0.875em;
+    line-height: 1.5em;
     font-family: 'Roboto Mono', sans-serif;
     font-weight: 400;
   }

@@ -1,8 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto+Slab:wght@300;400;700&family=Roboto:wght@300;400;500&display=swap');
 
 :root {
-  --clr-bg: #151619;
-  --clr-text: #ffffff;
+  --clr-1: #151619;
+  --clr-2: #ffffff;
+  --clr-3: #35393f;
+  --clr-4: #5a6069;
+  --clr-5: #2b2d31;
+  --clr-6: #c1c4cb;
+  --clr-7: #1d1f22;
+  --clr-8: #7c8187;
+  --clr-button: #e46643;
+  --clr-button-hover: #f39765;
 }
 
 *,
@@ -14,13 +22,15 @@
 }
 
 button {
+  color: inherit;
+  font-family: inherit;
   background: none;
   border: none;
-  font-family: inherit;
+  cursor: pointer;
 }
 
 body {
-  background-color: var(--clr-bg);
-  color: var(--clr-text);
+  background-color: var(--clr-1);
+  color: var(--clr-2);
   font-family: 'Roboto', sans-serif;
 }

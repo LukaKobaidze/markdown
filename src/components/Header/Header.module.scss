@@ -1,3 +1,40 @@
+.header {
+  display: flex;
+  align-items: center;
+  height: 72px;
+  background-color: var(--clr-5);
+}
+
 .sidebarExpandButton {
-  
+  background-color: var(--clr-3);
+  width: 72px;
+  height: 72px;
+}
+
+.logo {
+  margin-left: 24px;
+  margin-right: 29px;
+}
+
+.divider {
+  height: 55%;
+  width: 1px;
+  background-color: var(--clr-4);
+}
+
+.document {
+  margin-left: 24px;
+  display: flex;
+  align-items: center;
+
+  &TextWrapper {
+    display: flex;
+    flex-direction: column;
+    margin-left: 16px;
+  }
+
+  &SubTitle {
+    color: var(--clr-6);
+    margin-bottom: 3px;
+  }
 }

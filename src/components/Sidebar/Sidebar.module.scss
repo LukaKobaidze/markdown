@@ -1,0 +1,31 @@
+.sidebar {
+  --transition-time: 200ms;
+  background-color: var(--clr-7);
+  overflow: hidden;
+  width: 250px;
+  transition: width var(--transition-time);
+
+  &.hidden {
+    width: 0;
+
+    .contentWrapper {
+      transform: translateX(-100%);
+    }
+  }
+}
+
+.contentWrapper {
+  width: 250px;
+  padding: 24px;
+  height: 100%;
+  transition: transform var(--transition-time);
+}
+
+.textMyDocuments {
+  color: var(--clr-8);
+}
+
+.buttonNewDocument {
+  margin-top: 29px;
+  width: 100%;
+}
