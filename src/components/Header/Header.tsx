@@ -1,7 +1,7 @@
-import { IconClose, IconDocument, IconMenu, Logo } from '@/assets';
+import { IconClose, IconMenu, Logo } from '@/assets';
 import styles from './Header.module.scss';
 import { DocumentType } from '@/types';
-import Text from '../Text';
+import Document from '../Document';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   document: DocumentType;
@@ -23,17 +23,7 @@ export default function Header(props: Props) {
       </button>
       <Logo className={styles.logo} />
       <div className={styles.divider} />
-      <div className={styles.document}>
-        <IconDocument />
-        <div className={styles.documentTextWrapper}>
-          <Text as="span" variant="S-light" className={styles.documentSubTitle}>
-            Document Name
-          </Text>
-          <Text as="span" variant="M">
-            {document.name}
-          </Text>
-        </div>
-      </div>
+      <Document as="div" documentName={document.name} className={styles.document} />
     </header>
   );
 }

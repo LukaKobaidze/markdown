@@ -1,9 +1,15 @@
+import MarkdownHeader from '../MarkdownHeader';
 import styles from './Preview.module.scss';
 
-interface Props {
-  
-}
+type Props = React.HTMLAttributes<HTMLDivElement>
 
 export default function Preview(props: Props) {
-  return <></>
+  const { className, ...restProps } = props;
+
+  return (
+    <div className={`${styles.container} ${className}`} {...restProps}>
+      <MarkdownHeader>PREVIEW</MarkdownHeader>
+      <div></div>
+    </div>
+  );
 }

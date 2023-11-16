@@ -29,3 +29,11 @@
   margin-top: 29px;
   width: 100%;
 }
+
+.documents {
+  margin-top: 24px;
+
+  & > *:not(:last-child) {
+    margin-bottom: 26px;
+  }
+}
