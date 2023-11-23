@@ -4,6 +4,12 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+}
+
+.textareaWrapper {
+  height: 100%;
+  padding-right: 4px;
 }
 
 .textarea {
@@ -14,6 +20,12 @@
   resize: none;
   background: none;
   border: none;
-  padding: 0.6428571428571429em 1.142857142857143em;
+  padding: 9px 12px 9px 16px;
   color: var(--clr-9);
+
+  &:not(:focus, :hover) {
+    &::-webkit-scrollbar-thumb {
+      background: transparent;
+    }
+  }
 }

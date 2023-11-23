@@ -29,6 +29,7 @@ export default function Sidebar(props: Props) {
         <div className={styles.documents}>
           {documents.map((documentData, documentIndex) => (
             <Document
+              key={documentIndex}
               as="button"
               documentName={documentData.name}
               onClick={() => onOpenDocument(documentIndex)}

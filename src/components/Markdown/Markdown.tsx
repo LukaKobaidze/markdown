@@ -13,11 +13,13 @@ export default function Markdown(props: Props) {
   return (
     <div className={`${styles.container} ${className}`} {...restProps}>
       <MarkdownHeader>MARKDOWN</MarkdownHeader>
-      <textarea
-        className={styles.textarea}
-        value={content}
-        onChange={(e) => onEdit(e.target.value)}
-      />
+      <div className={styles.textareaWrapper}>
+        <textarea
+          className={styles.textarea}
+          value={content}
+          onChange={(e) => onEdit(e.target.value)}
+        />
+      </div>
     </div>
   );
 }

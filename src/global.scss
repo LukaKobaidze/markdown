@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto+Slab:wght@300;400;700&family=Roboto:wght@300;400;500&display=swap');
 
 :root {
+  --clr-primary: #e46643;
   --clr-1: #151619;
   --clr-2: #ffffff;
   --clr-3: #35393f;
@@ -9,10 +10,9 @@
   --clr-7: #1d1f22;
   --clr-8: #7c8187;
   --clr-9: #c1c4cb;
-  --clr-button: #e46643;
+
   --clr-button-hover: #f39765;
   --clr-document-subtitle-link: #7c8187;
-  --clr-document-name-hover: #e46643;
 }
 
 *,
@@ -21,6 +21,26 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+br {
+  content: '';
+  display: block;
+  height: 21px;
+}
+
+::-webkit-scrollbar {
+  width: 0.5em;
+  height: 0.5em;
+
+  &-thumb {
+    background: var(--clr-4);
+    border-radius: 100vw;
+
+    &:hover {
+      background: #78808c;
+    }
+  }
 }
 
 button {

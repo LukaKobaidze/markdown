@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DocumentType } from './types';
 import { initializeDocuments } from './helpers';
 import Header from './components/Header';
@@ -11,6 +11,9 @@ export default function App() {
   const [documents, setDocuments] = useState<DocumentType[]>(initializeDocuments);
   const [currentDocument, setCurrentDocument] = useState(1);
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
+  const [isResizing, setIsResizing] = useState(false);
+  const [markdownSize, setMarkdownSize] = useState(50);
+  const mainRef = useRef<HTMLElement>(null);
 
   const currentDocumentData = documents[currentDocument];
 
@@ -23,6 +26,33 @@ export default function App() {
       ];
     });
   };
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      e.preventDefault();
+      const container = mainRef.current;
+
+      if (container) {
+        setMarkdownSize(
+          ((e.pageX - container.offsetLeft) / container.clientWidth) * 100
+        );
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+    };
+
+    if (isResizing) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isResizing]);
 
   return (
     <div className={styles.layout}>
@@ -38,14 +68,18 @@ export default function App() {
         isSidebarExpanded={isSidebarExpanded}
         onSidebarToggle={() => setIsSidebarExpanded((state) => !state)}
       />
-      <main className={styles.main}>
+      <main ref={mainRef} className={styles.main}>
         <Markdown
           content={currentDocumentData.content}
           onEdit={handleMarkdownEdit}
           className={styles.markdown}
+          style={{ width: markdownSize + '%' }}
         />
-        <div className={styles.resize} />
-        <Preview className={styles.preview} />
+        <div className={styles.resize} onMouseDown={() => setIsResizing(true)} />
+        <Preview
+          className={styles.preview}
+          markdownContent={currentDocumentData.content}
+        />
       </main>
     </div>
   );
