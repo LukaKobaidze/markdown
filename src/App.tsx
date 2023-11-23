@@ -7,12 +7,15 @@ import Markdown from './components/Markdown';
 import Preview from './components/Preview';
 import styles from './App.module.scss';
 
+const MARKDOWN_MIN_SIZE = 30;
+
 export default function App() {
   const [documents, setDocuments] = useState<DocumentType[]>(initializeDocuments);
   const [currentDocument, setCurrentDocument] = useState(1);
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const [isResizing, setIsResizing] = useState(false);
   const [markdownSize, setMarkdownSize] = useState(50);
+  const [isMarkdownHidden, setIsMarkdownHidden] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
 
   const currentDocumentData = documents[currentDocument];
@@ -33,9 +36,18 @@ export default function App() {
       const container = mainRef.current;
 
       if (container) {
-        setMarkdownSize(
-          ((e.pageX - container.offsetLeft) / container.clientWidth) * 100
-        );
+        const size =
+          ((e.pageX - container.offsetLeft) / container.clientWidth) * 100;
+
+        console.log(size);
+
+        if (size < MARKDOWN_MIN_SIZE / 1.5) {
+          setMarkdownSize(MARKDOWN_MIN_SIZE);
+          setIsMarkdownHidden(true);
+        } else {
+          setMarkdownSize(Math.max(size, MARKDOWN_MIN_SIZE));
+          setIsMarkdownHidden(false);
+        }
       }
     };
 
@@ -73,12 +85,14 @@ export default function App() {
           content={currentDocumentData.content}
           onEdit={handleMarkdownEdit}
           className={styles.markdown}
-          style={{ width: markdownSize + '%' }}
+          style={{ width: isMarkdownHidden ? 0 : markdownSize + '%' }}
         />
         <div className={styles.resize} onMouseDown={() => setIsResizing(true)} />
         <Preview
           className={styles.preview}
           markdownContent={currentDocumentData.content}
+          isMarkdownHidden={isMarkdownHidden}
+          onToggleMarkdown={() => setIsMarkdownHidden((state) => !state)}
         />
       </main>
     </div>

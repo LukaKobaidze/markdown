@@ -5,14 +5,30 @@
   overflow: hidden;
 }
 
-.content {
+.header {
+  display: flex;
+  align-items: center;
 }
 
-.markdown {
-  padding: 22px 23px;
+.focusPreviewButton {
+  margin-left: auto;
+
+  &:hover {
+    color: var(--clr-primary);
+  }
+}
+
+.markdownWrapper {
   overflow-y: auto;
   flex-grow: 1;
   height: 0;
+}
+
+.markdown {
+  max-width: 672px;
+  padding: 22px 23px;
+  margin-left: auto;
+  margin-right: auto;
 
   &:not(:focus, :hover) {
     &::-webkit-scrollbar-thumb {

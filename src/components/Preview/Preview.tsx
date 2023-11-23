@@ -7,32 +7,79 @@ import { HeadingLevel } from '../Heading/Heading';
 import Blockquote from '../Blockquote';
 import InlineCode from '../InlineCode';
 import CodeBlock from '../CodeBlock';
+import { IconHidePreview, IconShowPreview } from '@/assets';
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   markdownContent: string;
+  isMarkdownHidden: boolean;
+  onToggleMarkdown: () => void;
 }
 
 export default function Preview(props: Props) {
-  const { markdownContent, className, ...restProps } = props;
+  const {
+    markdownContent,
+    isMarkdownHidden,
+    onToggleMarkdown,
+    className,
+    ...restProps
+  } = props;
 
-  const handleInline = (str: string): React.ReactNode => {
+  const handleInline = (str: string): React.ReactNode[] => {
     const output: React.ReactNode[] = [''];
 
     for (let i = 0; i < str.length; i++) {
       if (str[i] === '`') {
+        let secondBracketIndex = -1;
+
         for (let j = i + 1; j < str.length; j++) {
           if (str[j] === '`') {
-            const textContent = str.slice(i + 1, j);
-
-            console.log('/', textContent, '/');
-
-            if (textContent !== '') {
-              output.push(<InlineCode>{str.slice(i + 1, j)}</InlineCode>, '');
-            } else {
-              output[output.length - 1] += '``';
-            }
-            i = j;
+            secondBracketIndex = j;
+            break;
           }
+        }
+
+        if (secondBracketIndex === -1) {
+          output[output.length - 1] += '`';
+        } else {
+          const textContent = str.slice(i + 1, secondBracketIndex);
+
+          if (textContent !== '') {
+            output.push(
+              <InlineCode>{str.slice(i + 1, secondBracketIndex)}</InlineCode>,
+              ''
+            );
+          } else {
+            output[output.length - 1] += '``';
+          }
+          i = secondBracketIndex;
+        }
+      } else if (str[i] === '[') {
+        let embedText = '';
+        let embedLink = '';
+
+        let loopEndedAt = -1;
+
+        for (let j = i + 1; j < str.length; j++) {
+          if (str[j] === ']' && str[j + 1] === '(') {
+            embedText = str.slice(i + 1, j);
+
+            for (let k = j + 2; k < str.length; k++) {
+              if (str[k] === ')') {
+                embedLink = str.slice(j + 2, k);
+                loopEndedAt = k;
+                break;
+              }
+            }
+
+            break;
+          }
+        }
+
+        if (embedText && embedLink && loopEndedAt !== -1) {
+          output.push(<a href={embedLink}>{embedText}</a>, '');
+          i = loopEndedAt;
+        } else {
+          output[output.length - 1] += str[i];
         }
       } else {
         output[output.length - 1] += str[i];
@@ -155,7 +202,7 @@ export default function Preview(props: Props) {
           ...lineBreaksAtTheEnd
         );
       } else if (line.charAt(0) === '>') {
-        output.push(<Blockquote>{line.slice(1).trim()}</Blockquote>);
+        output.push(<Blockquote>{handleInline(line.slice(1).trim())}</Blockquote>);
 
         i++;
       } else if (line === '```') {
@@ -193,9 +240,17 @@ export default function Preview(props: Props) {
 
   return (
     <div className={`${styles.container} ${className}`} {...restProps}>
-      <MarkdownHeader>PREVIEW</MarkdownHeader>
-      <div className={styles.markdown} tabIndex={0}>
-        {previewRender}
+      <MarkdownHeader className={styles.header}>
+        <span>PREVIEW</span>
+        <button
+          className={styles.focusPreviewButton}
+          onClick={() => onToggleMarkdown()}
+        >
+          {isMarkdownHidden ? <IconHidePreview /> : <IconShowPreview />}
+        </button>
+      </MarkdownHeader>
+      <div className={styles.markdownWrapper} tabIndex={0}>
+        <div className={styles.markdown}>{previewRender}</div>
       </div>
     </div>
   );
