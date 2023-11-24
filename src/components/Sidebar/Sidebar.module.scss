@@ -37,3 +37,38 @@
     margin-bottom: 26px;
   }
 }
+.document {
+  display: flex;
+  align-items: center;
+  font-size: 1em;
+  width: 100%;
+  text-align: start;
+
+  &:hover {
+    .documentName {
+      color: var(--clr-primary);
+    }
+  }
+
+  &TextWrapper {
+    display: flex;
+    flex-direction: column;
+    margin-left: 16px;
+  }
+
+  &SubTitle {
+    margin-bottom: 3px;
+    color: var(--clr-document-subtitle-link);
+  }
+
+  &InputWrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  &Input {
+    display: block;
+    width: 90%;
+  }
+}

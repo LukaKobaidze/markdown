@@ -9,6 +9,11 @@
   background-color: var(--clr-3);
   width: 72px;
   height: 72px;
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--clr-primary);
+  }
 }
 
 .logo {
@@ -24,4 +29,42 @@
 
 .document {
   margin-left: 24px;
+  display: flex;
+  align-items: center;
+  font-size: 1em;
+
+  &TextWrapper {
+    display: flex;
+    flex-direction: column;
+    margin-left: 16px;
+  }
+
+  &SubTitle {
+    color: var(--clr-9);
+    margin-bottom: 3px;
+  }
+
+  &NameButton {
+    font-size: 1em;
+    text-align: start;
+  }
+}
+
+.deleteButton {
+  margin-left: auto;
+  margin-right: 24px;
+}
+
+.deleteModal {
+  max-width: 343px;
+
+  &Paragraph {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    color: var(--clr-9);
+  }
+
+  &Button {
+    width: 100%;
+  }
 }

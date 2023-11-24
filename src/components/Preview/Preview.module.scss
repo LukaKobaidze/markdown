@@ -22,6 +22,12 @@
   overflow-y: auto;
   flex-grow: 1;
   height: 0;
+
+  &:not(:focus, :hover) {
+    &::-webkit-scrollbar-thumb {
+      background: transparent;
+    }
+  }
 }
 
 .markdown {
@@ -29,12 +35,6 @@
   padding: 22px 23px;
   margin-left: auto;
   margin-right: auto;
-
-  &:not(:focus, :hover) {
-    &::-webkit-scrollbar-thumb {
-      background: transparent;
-    }
-  }
 
   & ol,
   & ul {

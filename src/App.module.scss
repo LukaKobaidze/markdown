@@ -31,30 +31,3 @@
 .preview {
   flex-grow: 1;
 }
-
-.resize {
-  flex-shrink: 0;
-  position: relative;
-  height: 100%;
-  width: 1px;
-  background-color: var(--clr-4);
-  cursor: e-resize;
-  transition-property: filter;
-  transition-duration: 150ms;
-
-  &:hover {
-    transition-duration: 200ms;
-    transition-delay: 150ms;
-    filter: brightness(200%);
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 10px;
-    transform: translateX(-50%);
-  }
-}
