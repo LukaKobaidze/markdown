@@ -25,7 +25,7 @@ export default function Resizer(props: Props) {
         const size =
           ((e.pageX - container.offsetLeft) / container.clientWidth) * 100;
 
-        if (size < MARKDOWN_MIN_SIZE / 1) {
+        if (size < MARKDOWN_MIN_SIZE / 2) {
           setMarkdownSize(MARKDOWN_MIN_SIZE);
           setIsMarkdownHidden(true);
         } else if (size > MARKDOWN_MAX_SIZE + (100 - MARKDOWN_MAX_SIZE) / 2) {

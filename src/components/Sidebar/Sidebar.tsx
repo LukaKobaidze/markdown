@@ -1,24 +1,54 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { DocumentType } from '@/types';
 import Button from '../Button';
 import Text from '../Text';
-import styles from './Sidebar.module.scss';
-import Document from '../Document';
-import Modal from '../Modal';
-import Heading from '../Heading';
 import Input from '../Input';
 import { IconDocument } from '@/assets';
+import styles from './Sidebar.module.scss';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   isExpanded: boolean;
   documents: DocumentType[];
+  currentDocument: number;
   onOpenDocument: (index: number) => void;
+  onCreateDocument: (name: string) => void;
 }
 
 export default function Sidebar(props: Props) {
-  const { isExpanded, documents, onOpenDocument, className, ...restProps } = props;
+  const {
+    isExpanded,
+    documents,
+    currentDocument,
+    onOpenDocument,
+    onCreateDocument,
+    className,
+    ...restProps
+  } = props;
 
+  const createDocumentInput = useRef<HTMLInputElement>(null);
   const [isCreatingDocument, setIsCreatingDocument] = useState(false);
+
+  const handleCreateDocumentInputBlur = () => {
+    const value = createDocumentInput.current?.value.trim();
+
+    if (value) {
+      onCreateDocument(value);
+    }
+    setIsCreatingDocument(false);
+  };
+
+  const handleCreateDocumentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const value = createDocumentInput.current?.value.trim();
+
+    if (!value || documents.some((document) => document.name === value + '.md')) {
+      return;
+    }
+
+    onCreateDocument(value);
+    setIsCreatingDocument(false);
+  };
 
   return (
     <>
@@ -41,11 +71,7 @@ export default function Sidebar(props: Props) {
 
           <div className={styles.documents}>
             {isCreatingDocument && (
-              <div
-                className={`${styles.document} ${styles['document--button']} ${
-                  className || ''
-                }`}
-              >
+              <div className={`${styles.document} ${className || ''}`}>
                 <div>
                   <IconDocument />
                 </div>
@@ -57,12 +83,19 @@ export default function Sidebar(props: Props) {
                   >
                     Document Name
                   </Text>
-                  <div className={styles.documentInputWrapper}>
-                    <Input className={styles.documentInput} />
-                    <Text as="span" variant="S-light">
-                      .md
-                    </Text>
-                  </div>
+                  <form onSubmit={handleCreateDocumentSubmit}>
+                    <div className={styles.documentInputWrapper}>
+                      <Input
+                        ref={createDocumentInput}
+                        className={styles.documentInput}
+                        autoFocus
+                        onBlur={handleCreateDocumentInputBlur}
+                      />
+                      <Text as="span" variant="S-light">
+                        .md
+                      </Text>
+                    </div>
+                  </form>
                 </div>
               </div>
             )}
@@ -71,9 +104,9 @@ export default function Sidebar(props: Props) {
               <button
                 key={documentIndex}
                 className={`${styles.document} ${styles['document--button']} ${
-                  className || ''
-                }`}
-                {...restProps}
+                  documentIndex === currentDocument ? styles.active : ''
+                } ${className || ''}`}
+                onClick={() => onOpenDocument(documentIndex)}
               >
                 <IconDocument />
                 <div className={styles.documentTextWrapper}>

@@ -38,15 +38,42 @@
   }
 }
 .document {
+  position: relative;
   display: flex;
   align-items: center;
   font-size: 1em;
   width: 100%;
   text-align: start;
 
-  &:hover {
-    .documentName {
-      color: var(--clr-primary);
+  &--button {
+    &::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      height: 9px;
+      width: 5px;
+      background-color: var(--clr-2);
+      border-top-right-radius: 100vw;
+      border-bottom-right-radius: 100vw;
+      transition: height 200ms, background-color 200ms;
+    }
+
+    &:hover,
+    &:focus-visible {
+      .documentName {
+        color: var(--clr-primary);
+      }
+
+      &::before {
+        height: 50%;
+      }
+    }
+
+    &.active {
+      &::before {
+        height: 100%;
+        background-color: var(--clr-primary);
+      }
     }
   }
 

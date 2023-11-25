@@ -1,9 +1,17 @@
+import { forwardRef } from 'react';
 import styles from './Input.module.scss';
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {}
+type Ref = HTMLInputElement;
 
-export default function Input(props: Props) {
+export default forwardRef<Ref, Props>(function Input(props, ref) {
   const { className, ...restProps } = props;
 
-  return <input className={`${styles.input} ${className || ''}`} {...restProps} />;
-}
+  return (
+    <input
+      ref={ref}
+      className={`${styles.input} ${className || ''}`}
+      {...restProps}
+    />
+  );
+});

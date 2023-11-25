@@ -13,12 +13,17 @@ export default function App() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const [isMarkdownHidden, setIsMarkdownHidden] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
+  const markdownRef = useRef<HTMLTextAreaElement>(null);
 
   const currentDocumentData = documents[currentDocument];
 
   useEffect(() => {
     document.title = `${currentDocumentData.name} | Markdown Editor`;
-  });
+  }, [currentDocumentData]);
+
+  useEffect(() => {
+    markdownRef.current?.focus();
+  }, [currentDocument]);
 
   const handleMarkdownEdit = (content: string) => {
     setDocuments((state) => {
@@ -28,6 +33,13 @@ export default function App() {
         ...state.slice(currentDocument + 1),
       ];
     });
+  };
+
+  const handleCreateDocument = (name: string) => {
+    setDocuments((state) => {
+      return [{ name: name + '.md', createdAt: new Date(), content: '' }, ...state];
+    });
+    setCurrentDocument(0);
   };
 
   const handleDeleteDocument = () => {
@@ -49,7 +61,9 @@ export default function App() {
         className={styles.sidebar}
         isExpanded={isSidebarExpanded}
         documents={documents}
+        currentDocument={currentDocument}
         onOpenDocument={(index) => setCurrentDocument(index)}
+        onCreateDocument={handleCreateDocument}
       />
       <Header
         className={styles.header}
@@ -64,6 +78,7 @@ export default function App() {
           onEdit={handleMarkdownEdit}
           containerRef={mainRef}
           setIsMarkdownHidden={setIsMarkdownHidden}
+          textareaRef={markdownRef}
           className={styles.markdown}
           style={isMarkdownHidden ? { width: 0 } : undefined}
         />
