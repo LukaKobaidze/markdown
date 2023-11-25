@@ -1,15 +1,18 @@
 import { useRef, useState } from 'react';
-import { DocumentType } from '@/types';
+import { DocumentType, ThemeType } from '@/types';
 import Button from '../Button';
 import Text from '../Text';
 import Input from '../Input';
 import { IconDocument } from '@/assets';
 import styles from './Sidebar.module.scss';
+import ThemeSwitch from '../ThemeSwitch';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   isExpanded: boolean;
   documents: DocumentType[];
   currentDocument: number;
+  theme: ThemeType;
+  onThemeToggle: () => void;
   onOpenDocument: (index: number) => void;
   onCreateDocument: (name: string) => void;
 }
@@ -19,6 +22,8 @@ export default function Sidebar(props: Props) {
     isExpanded,
     documents,
     currentDocument,
+    theme,
+    onThemeToggle,
     onOpenDocument,
     onCreateDocument,
     className,
@@ -124,22 +129,14 @@ export default function Sidebar(props: Props) {
               </button>
             ))}
           </div>
+
+          <ThemeSwitch
+            classNameContainer={styles.themeSwitch}
+            theme={theme}
+            onClick={() => onThemeToggle()}
+          />
         </div>
       </aside>
-
-      {/* {isCreatingDocument && (
-        <Modal onClose={() => setIsCreatingDocument(false)}>
-          <Heading level="3" styleLevel="4">
-            New Document
-          </Heading>
-          <div>
-            <Input />
-            <Text as="span" variant="S-light">
-              .md
-            </Text>
-          </div>
-        </Modal>
-      )} */}
     </>
   );
 }

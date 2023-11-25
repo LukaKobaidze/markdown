@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { DocumentType } from './types';
+import { DocumentType, ThemeType } from './types';
 import { initializeDocuments } from './helpers';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
@@ -12,6 +12,7 @@ export default function App() {
   const [currentDocument, setCurrentDocument] = useState(1);
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const [isMarkdownHidden, setIsMarkdownHidden] = useState(false);
+  const [theme, setTheme] = useState<ThemeType>('dark');
   const mainRef = useRef<HTMLElement>(null);
   const markdownRef = useRef<HTMLTextAreaElement>(null);
 
@@ -24,6 +25,11 @@ export default function App() {
   useEffect(() => {
     markdownRef.current?.focus();
   }, [currentDocument]);
+
+  useEffect(() => {
+    document.body.classList.add(theme);
+    document.body.classList.remove(theme === 'dark' ? 'light' : 'dark');
+  }, [theme]);
 
   const handleMarkdownEdit = (content: string) => {
     setDocuments((state) => {
@@ -62,6 +68,10 @@ export default function App() {
         isExpanded={isSidebarExpanded}
         documents={documents}
         currentDocument={currentDocument}
+        theme={theme}
+        onThemeToggle={() =>
+          setTheme((state) => (state === 'light' ? 'dark' : 'light'))
+        }
         onOpenDocument={(index) => setCurrentDocument(index)}
         onCreateDocument={handleCreateDocument}
       />

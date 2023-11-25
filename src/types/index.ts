@@ -5,3 +5,5 @@ export type DocumentType = {
   name: string;
   content: string;
 };
+
+export type ThemeType = 'light' | 'dark'

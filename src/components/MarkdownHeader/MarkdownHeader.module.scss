@@ -1,9 +1,9 @@
 @use '../Text/Text.module.scss';
 
 .header {
-  background-color: var(--clr-7);
   padding: 0.8571428571428571em 1.142857142857143em;
-  color: var(--clr-9);
+  background-color: var(--clr-markdown-header-bg);
+  color: var(--clr-markdown-header-text);
   max-height: 41px;
 
   @extend .text--S;

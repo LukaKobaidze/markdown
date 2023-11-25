@@ -88,7 +88,7 @@ export default function Resizer(props: Props) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isKeyboardResizing]);
+  }, [isKeyboardResizing, setIsMarkdownHidden, setMarkdownSize]);
 
   return (
     <button
