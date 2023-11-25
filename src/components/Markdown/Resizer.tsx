@@ -41,6 +41,7 @@ export default function Resizer(props: Props) {
 
     const handleMouseUp = () => {
       setIsResizing(false);
+      setIsKeyboardResizing(false);
     };
 
     if (isResizing) {
@@ -52,7 +53,9 @@ export default function Resizer(props: Props) {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [containerRef, isResizing, setIsMarkdownHidden, setMarkdownSize]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isResizing]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -75,6 +78,7 @@ export default function Resizer(props: Props) {
           setMarkdownSize((state) => {
             const stateNext = state + 1;
 
+            setIsMarkdownHidden(false);
             return stateNext;
           });
         }

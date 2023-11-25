@@ -1,0 +1,35 @@
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  background-color: var(--clr-4);
+  color: var(--clr-7);
+  box-shadow: 0 16px 24px rgba(0, 0, 0, 0.3), 0 6px 8px rgba(0, 0, 0, 0.2);
+  padding: 4px;
+  border-radius: 4px;
+  list-style: none;
+}
+
+.item {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  border-radius: 2px;
+  padding: 8px 8px 8px 12px;
+  width: 100%;
+
+  &:hover {
+    background-color: hsla(0, 0%, 100%, 0.1);
+  }
+
+  &Icon {
+    margin-right: 8px;
+  }
+
+  &Text {
+    font-size: 0.875rem;
+    letter-spacing: 0;
+  }
+}

@@ -74,6 +74,7 @@ export default function App() {
         }
         onOpenDocument={(index) => setCurrentDocument(index)}
         onCreateDocument={handleCreateDocument}
+        onDeleteDocument={handleDeleteDocument}
       />
       <Header
         className={styles.header}
