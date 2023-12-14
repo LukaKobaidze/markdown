@@ -47,21 +47,46 @@
   &NameButton {
     font-size: 1em;
     text-align: start;
+    min-height: 24px;
+    padding-bottom: 5px;
+
+    &:hover {
+      .documentNameButtonIcon {
+        opacity: 1;
+      }
+    }
+
+    &Icon {
+      margin-left: 5px;
+      transform: translateY(1px);
+      height: 15px;
+      opacity: 0;
+    }
   }
 }
 
 .deleteButton {
   margin-left: auto;
-  margin-right: 24px;
+  margin-right: 17px;
+  padding: 7px;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--clr-primary);
+  }
 }
 
 .deleteModal {
   max-width: 343px;
 
+  &Heading {
+    color: var(--clr-preview-text-1);
+  }
+
   &Paragraph {
     margin-top: 16px;
     margin-bottom: 16px;
-    color: var(--clr-7);
+    color: var(--clr-preview-text-2);
   }
 
   &Button {

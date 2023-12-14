@@ -1,56 +1,57 @@
-import { useEffect, useState } from 'react';
-import MarkdownHeader from '../MarkdownHeader';
 import styles from './Markdown.module.scss';
-import Resizer from './Resizer';
+import MainContainerHeader from '../MainContainerHeader';
+import { useState } from 'react';
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   content: string;
-  containerRef: React.RefObject<HTMLElement>;
-  setIsMarkdownHidden: React.Dispatch<React.SetStateAction<boolean>>;
   onEdit: (content: string) => void;
+  isExtended: boolean;
+  onToggleExtend: () => void;
   textareaRef?: React.RefObject<HTMLTextAreaElement>;
 }
 
 export default function Markdown(props: Props) {
   const {
     content,
-    containerRef,
-    setIsMarkdownHidden,
     onEdit,
+    isExtended,
+    onToggleExtend,
     textareaRef,
     className,
-    style,
     ...restProps
   } = props;
 
-  const [markdownSize, setMarkdownSize] = useState(50);
+  const [textareaFocusOutline, setTextareaFocusOutline] = useState(true);
 
-  useEffect(() => {
-    console.log('content change!');
-  }, [content]);
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    onEdit(e.target.value);
+    setTextareaFocusOutline(false);
+  };
+
+  const handleTextareaFocus = () => {
+    setTextareaFocusOutline(true);
+  };
 
   return (
     <>
-      <div
-        className={`${styles.container} ${className}`}
-        {...restProps}
-        style={{ width: markdownSize + '%', ...style }}
-      >
-        <MarkdownHeader>MARKDOWN</MarkdownHeader>
+      <div className={`${styles.container} ${className}`} {...restProps}>
+        <MainContainerHeader
+          title="Markdown"
+          isExtended={isExtended}
+          onToggleExtend={onToggleExtend}
+        />
         <div className={styles.textareaWrapper}>
           <textarea
-            className={styles.textarea}
+            className={`${styles.textarea} ${
+              !textareaFocusOutline ? styles['textarea--hide-outline'] : ''
+            }`}
             value={content}
-            onChange={(e) => onEdit(e.target.value)}
+            onChange={handleTextareaChange}
+            onFocus={handleTextareaFocus}
             ref={textareaRef}
           />
         </div>
       </div>
-      <Resizer
-        containerRef={containerRef}
-        setIsMarkdownHidden={setIsMarkdownHidden}
-        setMarkdownSize={setMarkdownSize}
-      />
     </>
   );
 }

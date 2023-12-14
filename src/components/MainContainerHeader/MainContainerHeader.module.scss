@@ -5,6 +5,22 @@
   background-color: var(--clr-markdown-header-bg);
   color: var(--clr-markdown-header-text);
   max-height: 41px;
+  display: flex;
+  align-items: center;
 
   @extend .text--S;
+}
+
+.title {
+  text-transform: uppercase;
+}
+
+.extendButton {
+  margin-left: auto;
+  padding: 5px;
+  margin-right: -5px;
+
+  &:hover {
+    color: var(--clr-primary);
+  }
 }

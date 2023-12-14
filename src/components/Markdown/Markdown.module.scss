@@ -10,6 +10,8 @@
 .textareaWrapper {
   height: 100%;
   padding-right: 4px;
+  padding-bottom: 2px;
+  padding-left: 2px;
 }
 
 .textarea {
@@ -20,11 +22,15 @@
   resize: none;
   background: none;
   border: none;
-  padding: 9px 12px 9px 16px;
+  padding: 9px 12px 7px 14px;
 
   &:not(:focus, :hover) {
     &::-webkit-scrollbar-thumb {
       background: transparent;
     }
+  }
+
+  &--hide-outline {
+    outline: none;
   }
 }

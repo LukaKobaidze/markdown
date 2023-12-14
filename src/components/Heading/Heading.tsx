@@ -8,13 +8,15 @@ interface Props extends React.HTMLAttributes<HTMLHeadingElement> {
 }
 
 export default function Heading(props: Props) {
-  const { level, styleLevel = level, children, ...restProps } = props;
+  const { level, styleLevel = level, className, children, ...restProps } = props;
 
   const HeadingLevel: keyof JSX.IntrinsicElements = `h${level}`;
 
   return (
     <HeadingLevel
-      className={`${styles.heading} ${styles[`heading--${styleLevel}`]}`}
+      className={`${styles.heading} ${
+        styles[`heading--${styleLevel}`]
+      } ${className}`}
       {...restProps}
     >
       {children}

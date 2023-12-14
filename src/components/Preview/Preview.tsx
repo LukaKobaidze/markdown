@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import MarkdownHeader from '../MarkdownHeader';
 import styles from './Preview.module.scss';
 import Heading from '../Heading';
 import Text from '../Text';
@@ -7,22 +6,17 @@ import { HeadingLevel } from '../Heading/Heading';
 import Blockquote from '../Blockquote';
 import InlineCode from '../InlineCode';
 import CodeBlock from '../CodeBlock';
-import { IconHidePreview, IconShowPreview } from '@/assets';
+import MainContainerHeader from '../MainContainerHeader';
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   markdownContent: string;
-  isMarkdownHidden: boolean;
-  onToggleMarkdown: () => void;
+  isExtended: boolean;
+  onToggleExtend: () => void;
 }
 
 export default function Preview(props: Props) {
-  const {
-    markdownContent,
-    isMarkdownHidden,
-    onToggleMarkdown,
-    className,
-    ...restProps
-  } = props;
+  const { markdownContent, isExtended, onToggleExtend, className, ...restProps } =
+    props;
 
   const handleInline = (str: string): React.ReactNode[] => {
     const output: React.ReactNode[] = [''];
@@ -110,7 +104,7 @@ export default function Preview(props: Props) {
         // Invalid heading format
         if (firstSpaceIndex > 6) {
           output.push(
-            <Text key={line} as="p" variant="slab-regular">
+            <Text key={i + line} as="p" variant="slab-regular">
               {handleInline(line)}
             </Text>
           );
@@ -119,7 +113,7 @@ export default function Preview(props: Props) {
 
           output.push(
             <Heading
-              key={textContent}
+              key={i + textContent}
               level={String(firstSpaceIndex) as HeadingLevel}
             >
               {handleInline(textContent)}
@@ -148,7 +142,7 @@ export default function Preview(props: Props) {
             const content = line.slice(1).trim();
 
             listItems.push(
-              <li key={content}>
+              <li key={i + content}>
                 <Text as="span" variant="slab-regular">
                   {handleInline(content)}
                 </Text>
@@ -185,7 +179,7 @@ export default function Preview(props: Props) {
             const content = line.slice(indexOfDot + 1).trim();
 
             listItems.push(
-              <li key={content}>
+              <li key={i + content}>
                 <Text as="span" variant="slab-regular">
                   {handleInline(content)}
                 </Text>
@@ -202,7 +196,11 @@ export default function Preview(props: Props) {
           ...lineBreaksAtTheEnd
         );
       } else if (line.charAt(0) === '>') {
-        output.push(<Blockquote>{handleInline(line.slice(1).trim())}</Blockquote>);
+        output.push(
+          <Blockquote key={i + line}>
+            {handleInline(line.slice(1).trim())}
+          </Blockquote>
+        );
 
         i++;
       } else if (line === '```') {
@@ -221,12 +219,18 @@ export default function Preview(props: Props) {
           }
         }
 
-        output.push(<CodeBlock>{textLines.join('\n')}</CodeBlock>);
+        const textContent = textLines.join('\n');
+        output.push(<CodeBlock key={i + textContent}>{textContent}</CodeBlock>);
 
         i++;
       } else {
         output.push(
-          <Text as="p" variant="slab-regular" className={styles.paragraph}>
+          <Text
+            key={i + line}
+            as="p"
+            variant="slab-regular"
+            className={styles.paragraph}
+          >
             {handleInline(line)}
           </Text>
         );
@@ -240,15 +244,11 @@ export default function Preview(props: Props) {
 
   return (
     <div className={`${styles.container} ${className}`} {...restProps}>
-      <MarkdownHeader className={styles.header}>
-        <span>PREVIEW</span>
-        <button
-          className={styles.focusPreviewButton}
-          onClick={() => onToggleMarkdown()}
-        >
-          {isMarkdownHidden ? <IconHidePreview /> : <IconShowPreview />}
-        </button>
-      </MarkdownHeader>
+      <MainContainerHeader
+        title="Preview"
+        isExtended={isExtended}
+        onToggleExtend={onToggleExtend}
+      />
       <div className={styles.markdownWrapper} tabIndex={0}>
         <div className={styles.markdown}>{previewRender}</div>
       </div>

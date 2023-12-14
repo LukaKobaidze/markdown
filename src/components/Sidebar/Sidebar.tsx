@@ -1,41 +1,51 @@
 import { useRef, useState, useContext } from 'react';
-import { DocumentType, ThemeType } from '@/types';
+import { MenuContext } from '@/context/menu.context';
+import { DocumentsContext } from '@/context/documents.context';
+import { ThemeType } from '@/types';
+import {
+  IconDelete,
+  IconDocument,
+  IconDocumentAdd,
+  IconHide,
+  IconRename,
+} from '@/assets';
 import Button from '../Button';
 import Text from '../Text';
 import Input from '../Input';
-import { IconDelete, IconDocument } from '@/assets';
-import styles from './Sidebar.module.scss';
 import ThemeSwitch from '../ThemeSwitch';
-import { MenuContext } from '@/context/menu.context';
+import styles from './Sidebar.module.scss';
+import { MenuProps } from '../Menu';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   isExpanded: boolean;
-  documents: DocumentType[];
-  currentDocument: number;
   theme: ThemeType;
+  setIsSidebarExtended: React.Dispatch<React.SetStateAction<boolean>>;
   onThemeToggle: () => void;
-  onOpenDocument: (index: number) => void;
-  onCreateDocument: (name: string) => void;
-  onDeleteDocument: (index: number) => void;
 }
 
 export default function Sidebar(props: Props) {
   const {
     isExpanded,
-    documents,
-    currentDocument,
     theme,
+    setIsSidebarExtended,
     onThemeToggle,
-    onOpenDocument,
-    onCreateDocument,
-    onDeleteDocument,
     className,
     ...restProps
   } = props;
 
+  const {
+    documents,
+    currentDocument,
+    onCreateDocument,
+    onDeleteDocument,
+    onRenameDocument,
+    setCurrentDocument,
+  } = useContext(DocumentsContext);
   const { renderMenu } = useContext(MenuContext);
   const createDocumentInput = useRef<HTMLInputElement>(null);
   const [isCreatingDocument, setIsCreatingDocument] = useState(false);
+  const [renamingDocument, setRenamingDocument] = useState(-1);
+  const [renamingDocumentNewName, setRenamingDocumentNewName] = useState('');
 
   const handleCreateDocumentInputBlur = () => {
     const value = createDocumentInput.current?.value.trim();
@@ -59,22 +69,58 @@ export default function Sidebar(props: Props) {
     setIsCreatingDocument(false);
   };
 
+  const handleSidebarContextMenu = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+
+    renderMenu({
+      items: [
+        {
+          name: { Icon: IconDocumentAdd, text: 'New Document' },
+          action: () => setIsCreatingDocument(true),
+        },
+        {
+          name: { Icon: IconHide, text: 'Hide Sidebar' },
+          action: () => setIsSidebarExtended(false),
+        },
+      ],
+      windowPos: { x: e.pageX, y: e.pageY },
+    });
+  };
+
   const handleDocumentContextMenu = (
     e: React.MouseEvent<HTMLButtonElement>,
     documentIndex: number
   ) => {
     e.preventDefault();
+    e.stopPropagation();
+
+    const menuItems: MenuProps['items'] = [
+      {
+        name: { Icon: IconRename, text: 'Rename Document' },
+        action: () => {
+          setRenamingDocument(documentIndex);
+          setRenamingDocumentNewName(documents[documentIndex].name.slice(0, -3));
+        },
+      },
+    ];
+
+    if (documents[documentIndex].deletable) {
+      menuItems.push({
+        name: { Icon: IconDelete, text: 'Delete Document' },
+        action: () => onDeleteDocument(documentIndex),
+      });
+    }
 
     renderMenu({
-      items: [
-        { name: { text: 'Rename Document' }, action: () => {} },
-        {
-          name: { Icon: IconDelete, text: 'Delete Document' },
-          action: () => onDeleteDocument(documentIndex),
-        },
-      ],
+      items: menuItems,
       windowPos: { x: e.pageX, y: e.pageY },
     });
+  };
+
+  const handleRenameSubmit = () => {
+    onRenameDocument(renamingDocumentNewName, renamingDocument);
+    setRenamingDocument(-1);
+    setRenamingDocumentNewName('');
   };
 
   return (
@@ -85,18 +131,23 @@ export default function Sidebar(props: Props) {
         }`}
         {...restProps}
       >
-        <div className={styles.contentWrapper}>
-          <Text as="p" variant="S" className={styles.textMyDocuments}>
-            MY DOCUMENTS
-          </Text>
-          <Button
-            className={styles.buttonNewDocument}
-            onClick={() => setIsCreatingDocument(true)}
-          >
-            + New Document
-          </Button>
+        <div
+          className={styles.contentWrapper}
+          onContextMenu={handleSidebarContextMenu}
+        >
+          <div className={styles.containerPadding}>
+            <Text as="p" variant="S" className={styles.textMyDocuments}>
+              MY DOCUMENTS
+            </Text>
+            <Button
+              className={styles.buttonNewDocument}
+              onClick={() => setIsCreatingDocument(true)}
+            >
+              + New Document
+            </Button>
+          </div>
 
-          <div className={styles.documents}>
+          <div className={`${styles.documents}`}>
             {isCreatingDocument && (
               <div className={`${styles.document} ${className || ''}`}>
                 <div>
@@ -133,10 +184,12 @@ export default function Sidebar(props: Props) {
                 className={`${styles.document} ${styles['document--button']} ${
                   documentIndex === currentDocument ? styles.active : ''
                 } ${className || ''}`}
-                onClick={() => onOpenDocument(documentIndex)}
+                onClick={() => setCurrentDocument(documentIndex)}
                 onContextMenu={(e) => handleDocumentContextMenu(e, documentIndex)}
               >
-                <IconDocument />
+                <div>
+                  <IconDocument />
+                </div>
                 <div className={styles.documentTextWrapper}>
                   <Text
                     as="span"
@@ -145,19 +198,46 @@ export default function Sidebar(props: Props) {
                   >
                     Document Name
                   </Text>
-                  <Text as="span" variant="M" className={styles.documentName}>
-                    {documentData.name}
-                  </Text>
+                  {documentIndex === renamingDocument ? (
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        handleRenameSubmit();
+                      }}
+                    >
+                      <div className={styles.documentInputWrapper}>
+                        <Input
+                          ref={createDocumentInput}
+                          className={styles.documentInput}
+                          autoFocus
+                          onBlur={handleRenameSubmit}
+                          value={renamingDocumentNewName}
+                          onChange={(e) =>
+                            setRenamingDocumentNewName(e.target.value)
+                          }
+                        />
+                        <Text as="span" variant="S-light">
+                          .md
+                        </Text>
+                      </div>
+                    </form>
+                  ) : (
+                    <Text as="span" variant="M" className={styles.documentName}>
+                      {documentData.name}
+                    </Text>
+                  )}
                 </div>
               </button>
             ))}
           </div>
 
-          <ThemeSwitch
-            classNameContainer={styles.themeSwitch}
-            theme={theme}
-            onClick={() => onThemeToggle()}
-          />
+          <div className={`${styles.themeSwitchWrapper} ${styles.containerPadding}`}>
+            <ThemeSwitch
+              classNameContainer={styles.themeSwitch}
+              theme={theme}
+              onClick={() => onThemeToggle()}
+            />
+          </div>
         </div>
       </aside>
     </>

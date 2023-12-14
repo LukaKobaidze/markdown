@@ -1,7 +1,6 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Menu, { MenuProps } from '@/components/Menu';
-import AlertOutsideAction from '@/components/AlertOutsideAction';
 
 interface Context {
   renderMenu: (props: MenuProps) => void;
@@ -18,12 +17,12 @@ export const MenuContext = createContext(initial);
 export function MenuContextProvider({ children }: { children: React.ReactNode }) {
   const [menuPropsState, setMenuPropsState] = useState<MenuProps | null>(null);
 
-  const renderMenu: Context['renderMenu'] = (props: MenuProps) => {
+  const renderMenu: Context['renderMenu'] = useCallback((props: MenuProps) => {
     setMenuPropsState(props);
-  };
-  const removeMenu: Context['removeMenu'] = () => {
+  }, []);
+  const removeMenu: Context['removeMenu'] = useCallback(() => {
     setMenuPropsState(null);
-  };
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = () => {};
@@ -42,9 +41,7 @@ export function MenuContextProvider({ children }: { children: React.ReactNode })
       {children}
       {menuPropsState &&
         createPortal(
-          <AlertOutsideAction event="mousedown" onOutsideAction={removeMenu}>
-            <Menu {...menuPropsState} />
-          </AlertOutsideAction>,
+          <Menu onClose={removeMenu} {...menuPropsState} />,
           document.body
         )}
     </MenuContext.Provider>

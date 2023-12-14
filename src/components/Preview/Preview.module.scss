@@ -4,23 +4,11 @@
   flex-direction: column;
   overflow: hidden;
   color: var(--clr-preview-text-1);
-}
-
-.header {
-  display: flex;
-  align-items: center;
-}
-
-.focusPreviewButton {
-  margin-left: auto;
-
-  &:hover {
-    color: var(--clr-primary);
-  }
+  word-break: break-word;
 }
 
 .markdownWrapper {
-  overflow-y: auto;
+  overflow: auto;
   flex-grow: 1;
   height: 0;
 
@@ -32,6 +20,7 @@
 }
 
 .markdown {
+  min-width: 300px;
   max-width: 672px;
   padding: 22px 23px;
   margin-left: auto;
@@ -66,8 +55,4 @@
     margin-bottom: 4px;
     color: var(--clr-preview-text-2);
   }
-}
-
-.paragraph {
-  color: var(--clr-preview-text-2);
 }

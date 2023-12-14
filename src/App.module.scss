@@ -23,6 +23,17 @@
   display: flex;
   overflow: hidden;
   color: var(--clr-text-markdown-1);
+  padding-right: 1px;
+
+  ::-webkit-scrollbar {
+    &-thumb {
+      background: var(--clr-scrollbar-thumb);
+
+      &:hover {
+        background: var(--clr-scrollbar-thumb-hover);
+      }
+    }
+  }
 }
 
 .markdown {
