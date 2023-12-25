@@ -6,7 +6,9 @@
   padding: 0.6666666666666667em 1.066666666666667em;
   border-radius: 0.2666666666666667em;
 
-  &:hover {
-    background-color: var(--clr-button-hover);
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--clr-button-hover);
+    }
   }
 }

@@ -1,6 +1,6 @@
-import styles from './Markdown.module.scss';
-import MainContainerHeader from '../MainContainerHeader';
 import { useState } from 'react';
+import MainContainerHeader from '../MainContainerHeader';
+import styles from './Markdown.module.scss';
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   content: string;

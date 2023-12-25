@@ -20,6 +20,10 @@
   font-weight: 500;
   animation: fadeIn 100ms;
 
+  @media (pointer: coarse) {
+    display: none;
+  }
+
   &::before {
     content: '';
     width: var(--pointer-size);

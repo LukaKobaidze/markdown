@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect, useState } from 'react';
-import styles from './Menu.module.scss';
 import { MenuContext } from '@/context/menu.context';
 import Text from '../Text';
 import AlertOutsideAction from '../AlertOutsideAction';
+import styles from './Menu.module.scss';
 
 export interface MenuProps {
   items: ({ name: { Icon?: any; text: string } } & {

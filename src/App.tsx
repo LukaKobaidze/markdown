@@ -1,26 +1,31 @@
 import { useRef, useState, useEffect, useContext } from 'react';
 import { DocumentsContext } from './context/documents.context';
+import { ExtendedContainerType } from './types';
+import { useLocalStorageState, useTheme, useWindowDimensions } from './hooks';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import Markdown from './components/Markdown';
 import Preview from './components/Preview';
 import Resizer from './components/Resizer';
 import styles from './App.module.scss';
-import useTheme from './hooks/useTheme';
-import { ExtendedContainerType } from './types';
 
 export default function App() {
   const { documents, currentDocument, onMarkdownEdit } =
     useContext(DocumentsContext);
   const { theme, setTheme } = useTheme();
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
+  const [isSidebarExpanded, setIsSidebarExpanded] = useLocalStorageState(
+    'markdown-sidebar',
+    false
+  );
   const [extendedContainer, setExtendedContainer] =
-    useState<ExtendedContainerType>(null);
+    useLocalStorageState<ExtendedContainerType>('markdown-extended-container', null);
   const [resizerPercentage, setResizerPercentage] = useState(50);
   const [isResizing, setIsResizing] = useState(false);
   const [isKeyboardResizing, setIsKeyboardResizing] = useState(false);
+  const [windowWidth] = useWindowDimensions();
   const mainRef = useRef<HTMLElement>(null);
   const markdownRef = useRef<HTMLTextAreaElement>(null);
+  const sidebarHamburgerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     document.title = `${documents[currentDocument].name} | Markdown Editor`;
@@ -40,13 +45,22 @@ export default function App() {
         onThemeToggle={() =>
           setTheme((state) => (state === 'light' ? 'dark' : 'light'))
         }
+        windowWidth={windowWidth}
+        sidebarHamburgerRef={sidebarHamburgerRef}
       />
       <Header
         className={styles.header}
         isSidebarExpanded={isSidebarExpanded}
         onSidebarToggle={() => setIsSidebarExpanded((state) => !state)}
+        windowWidth={windowWidth}
+        sidebarHamburgerRef={sidebarHamburgerRef}
+        style={windowWidth <= 350 ? { minWidth: windowWidth } : undefined}
       />
-      <main ref={mainRef} className={styles.main}>
+      <main
+        ref={mainRef}
+        className={styles.main}
+        style={windowWidth <= 350 ? { minWidth: windowWidth } : undefined}
+      >
         <Markdown
           content={documents[currentDocument].content}
           onEdit={onMarkdownEdit}

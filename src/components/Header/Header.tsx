@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react';
+import { DocumentsContext } from '@/context/documents.context';
 import {
   IconClose,
   IconDelete,
@@ -8,21 +9,29 @@ import {
   Logo,
 } from '@/assets';
 import Text from '../Text';
-import styles from './Header.module.scss';
 import Modal from '../Modal';
 import Heading from '../Heading';
 import Button from '../Button';
 import Input from '../Input';
-import { DocumentsContext } from '@/context/documents.context';
 import Tooltip from '../Tooltip';
+import styles from './Header.module.scss';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   isSidebarExpanded: boolean;
   onSidebarToggle: () => void;
+  windowWidth: number;
+  sidebarHamburgerRef: React.RefObject<HTMLButtonElement>;
 }
 
 export default function Header(props: Props) {
-  const { isSidebarExpanded, onSidebarToggle, className, ...restProps } = props;
+  const {
+    isSidebarExpanded,
+    onSidebarToggle,
+    windowWidth,
+    sidebarHamburgerRef,
+    className,
+    ...restProps
+  } = props;
 
   const { documents, currentDocument, onRenameDocument, onDeleteDocument } =
     useContext(DocumentsContext);
@@ -47,13 +56,18 @@ export default function Header(props: Props) {
         <button
           className={styles.sidebarExpandButton}
           onClick={() => onSidebarToggle()}
+          ref={sidebarHamburgerRef}
         >
           {isSidebarExpanded ? <IconClose /> : <IconMenu />}
         </button>
-        <Logo className={styles.logo} />
-        <div className={styles.divider} />
+        {windowWidth > 768 && (
+          <>
+            <Logo className={styles.logo} />
+            <div className={styles.divider} />
+          </>
+        )}
         <div className={styles.document}>
-          <IconDocument />
+          <IconDocument className={styles.documentIcon} />
           <div className={styles.documentTextWrapper}>
             <Text as="span" variant="S-light" className={styles.documentSubTitle}>
               Document Name
@@ -64,6 +78,7 @@ export default function Header(props: Props) {
                   e.preventDefault();
                   handleRenameDocumentSubmit();
                 }}
+                className={styles.documentRenameForm}
               >
                 <Input
                   value={renamingNewName}
@@ -80,7 +95,11 @@ export default function Header(props: Props) {
                 className={styles.documentNameButton}
                 onClick={() => handleStartRename()}
               >
-                <Text as="span" variant="M" className={styles.documentName}>
+                <Text
+                  as="span"
+                  variant="M"
+                  className={styles.documentNameButtonText}
+                >
                   {documents[currentDocument].name}
                 </Text>
                 <IconRename className={styles.documentNameButtonIcon} />

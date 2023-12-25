@@ -17,6 +17,23 @@
 .containerPadding {
   padding-left: 24px;
   padding-right: 24px;
+
+  @media (max-width: 290px) {
+    position: relative;
+  }
+}
+
+.buttonClose {
+  position: absolute;
+  top: -15px;
+  right: 14px;
+  transform: scale(0.7);
+  padding: 10px;
+}
+
+.logo {
+  margin-top: 3px;
+  margin-bottom: 27px;
 }
 
 .contentWrapper {

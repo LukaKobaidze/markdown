@@ -10,9 +10,14 @@
   width: 72px;
   height: 72px;
 
-  &:hover,
   &:focus-visible {
     background-color: var(--clr-primary);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--clr-primary);
+    }
   }
 }
 
@@ -28,10 +33,19 @@
 }
 
 .document {
+  margin-right: 20px;
   margin-left: 24px;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   font-size: 1em;
+  width: 0;
+  flex-grow: 1;
+  overflow: hidden;
+
+  &Icon {
+    flex-shrink: 0;
+  }
 
   &TextWrapper {
     display: flex;
@@ -45,23 +59,43 @@
   }
 
   &NameButton {
+    display: flex;
+    align-items: center;
     font-size: 1em;
     text-align: start;
-    min-height: 24px;
+    min-height: 22px;
     padding-bottom: 5px;
+    width: 100%;
 
-    &:hover {
+    @media (hover: hover) {
       .documentNameButtonIcon {
-        opacity: 1;
+        opacity: 0;
       }
+
+      &:hover {
+        .documentNameButtonIcon {
+          opacity: 1;
+        }
+      }
+    }
+
+    &Text {
+      overflow: hidden;
+      white-space: nowrap;
+      display: block;
+      text-overflow: ellipsis;
     }
 
     &Icon {
       margin-left: 5px;
       transform: translateY(1px);
       height: 15px;
-      opacity: 0;
     }
+  }
+
+  &RenameForm {
+    display: flex;
+    width: 100%;
   }
 }
 

@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import styles from './Resizer.module.scss';
+import { useEffect } from 'react';
 import { ExtendedContainerType } from '@/types';
+import styles from './Resizer.module.scss';
 
 const MARKDOWN_MIN_SIZE = 30;
 const MARKDOWN_MAX_SIZE = 70;
@@ -37,8 +37,6 @@ export default function Resizer(props: Props) {
 
       if (container) {
         const size = ((x - container.offsetLeft) / container.clientWidth) * 100;
-
-        console.log(size);
 
         if (size < MARKDOWN_MIN_SIZE / 2) {
           setResizerPercentage(MARKDOWN_MIN_SIZE);

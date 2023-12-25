@@ -3,24 +3,29 @@ import { MenuContext } from '@/context/menu.context';
 import { DocumentsContext } from '@/context/documents.context';
 import { ThemeType } from '@/types';
 import {
+  IconClose,
   IconDelete,
   IconDocument,
   IconDocumentAdd,
   IconHide,
   IconRename,
+  Logo,
 } from '@/assets';
+import { MenuProps } from '../Menu';
 import Button from '../Button';
 import Text from '../Text';
 import Input from '../Input';
 import ThemeSwitch from '../ThemeSwitch';
+import AlertOutsideAction from '../AlertOutsideAction';
 import styles from './Sidebar.module.scss';
-import { MenuProps } from '../Menu';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   isExpanded: boolean;
   theme: ThemeType;
   setIsSidebarExtended: React.Dispatch<React.SetStateAction<boolean>>;
   onThemeToggle: () => void;
+  windowWidth: number;
+  sidebarHamburgerRef: React.RefObject<HTMLButtonElement>;
 }
 
 export default function Sidebar(props: Props) {
@@ -29,6 +34,8 @@ export default function Sidebar(props: Props) {
     theme,
     setIsSidebarExtended,
     onThemeToggle,
+    windowWidth,
+    sidebarHamburgerRef,
     className,
     ...restProps
   } = props;
@@ -124,122 +131,128 @@ export default function Sidebar(props: Props) {
   };
 
   return (
-    <>
-      <aside
-        className={`${styles.sidebar} ${!isExpanded ? styles.hidden : ''} ${
-          className || ''
-        }`}
-        {...restProps}
+    <aside
+      className={`${styles.sidebar} ${!isExpanded ? styles.hidden : ''} ${
+        className || ''
+      }`}
+      {...restProps}
+    >
+      <AlertOutsideAction
+        event="click"
+        onOutsideAction={() => setIsSidebarExtended(false)}
+        className={styles.contentWrapper}
+        onContextMenu={handleSidebarContextMenu}
+        handleWhen={windowWidth < 600 && isExpanded}
+        ignore={[sidebarHamburgerRef]}
       >
-        <div
-          className={styles.contentWrapper}
-          onContextMenu={handleSidebarContextMenu}
-        >
-          <div className={styles.containerPadding}>
-            <Text as="p" variant="S" className={styles.textMyDocuments}>
-              MY DOCUMENTS
-            </Text>
-            <Button
-              className={styles.buttonNewDocument}
-              onClick={() => setIsCreatingDocument(true)}
-            >
-              + New Document
-            </Button>
-          </div>
+        <div className={styles.containerPadding}>
+          {windowWidth <= 290 && (
+            <button className={styles.buttonClose} onClick={() => setIsSidebarExtended(false)}>
+              <IconClose className={styles.buttonCloseIcon} />
+            </button>
+          )}
+          {windowWidth <= 768 && <Logo className={styles.logo} />}
+          <Text as="p" variant="S" className={styles.textMyDocuments}>
+            MY DOCUMENTS
+          </Text>
+          <Button
+            className={styles.buttonNewDocument}
+            onClick={() => setIsCreatingDocument(true)}
+          >
+            + New Document
+          </Button>
+        </div>
 
-          <div className={`${styles.documents}`}>
-            {isCreatingDocument && (
-              <div className={`${styles.document} ${className || ''}`}>
-                <div>
-                  <IconDocument />
-                </div>
-                <div className={styles.documentTextWrapper}>
-                  <Text
-                    as="span"
-                    variant="S-light"
-                    className={styles.documentSubTitle}
+        <div className={`${styles.documents}`}>
+          {isCreatingDocument && (
+            <div className={`${styles.document} ${className || ''}`}>
+              <div>
+                <IconDocument />
+              </div>
+              <div className={styles.documentTextWrapper}>
+                <Text
+                  as="span"
+                  variant="S-light"
+                  className={styles.documentSubTitle}
+                >
+                  Document Name
+                </Text>
+                <form onSubmit={handleCreateDocumentSubmit}>
+                  <div className={styles.documentInputWrapper}>
+                    <Input
+                      ref={createDocumentInput}
+                      className={styles.documentInput}
+                      autoFocus
+                      onBlur={handleCreateDocumentInputBlur}
+                    />
+                    <Text as="span" variant="S-light">
+                      .md
+                    </Text>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {documents.map((documentData, documentIndex) => (
+            <button
+              key={documentIndex}
+              className={`${styles.document} ${styles['document--button']} ${
+                documentIndex === currentDocument ? styles.active : ''
+              } ${className || ''}`}
+              onClick={() => setCurrentDocument(documentIndex)}
+              onContextMenu={(e) => handleDocumentContextMenu(e, documentIndex)}
+            >
+              <div>
+                <IconDocument />
+              </div>
+              <div className={styles.documentTextWrapper}>
+                <Text
+                  as="span"
+                  variant="S-light"
+                  className={styles.documentSubTitle}
+                >
+                  Document Name
+                </Text>
+                {documentIndex === renamingDocument ? (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleRenameSubmit();
+                    }}
                   >
-                    Document Name
-                  </Text>
-                  <form onSubmit={handleCreateDocumentSubmit}>
                     <div className={styles.documentInputWrapper}>
                       <Input
                         ref={createDocumentInput}
                         className={styles.documentInput}
                         autoFocus
-                        onBlur={handleCreateDocumentInputBlur}
+                        onBlur={handleRenameSubmit}
+                        value={renamingDocumentNewName}
+                        onChange={(e) => setRenamingDocumentNewName(e.target.value)}
                       />
                       <Text as="span" variant="S-light">
                         .md
                       </Text>
                     </div>
                   </form>
-                </div>
-              </div>
-            )}
-
-            {documents.map((documentData, documentIndex) => (
-              <button
-                key={documentIndex}
-                className={`${styles.document} ${styles['document--button']} ${
-                  documentIndex === currentDocument ? styles.active : ''
-                } ${className || ''}`}
-                onClick={() => setCurrentDocument(documentIndex)}
-                onContextMenu={(e) => handleDocumentContextMenu(e, documentIndex)}
-              >
-                <div>
-                  <IconDocument />
-                </div>
-                <div className={styles.documentTextWrapper}>
-                  <Text
-                    as="span"
-                    variant="S-light"
-                    className={styles.documentSubTitle}
-                  >
-                    Document Name
+                ) : (
+                  <Text as="span" variant="M" className={styles.documentName}>
+                    {documentData.name}
                   </Text>
-                  {documentIndex === renamingDocument ? (
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        handleRenameSubmit();
-                      }}
-                    >
-                      <div className={styles.documentInputWrapper}>
-                        <Input
-                          ref={createDocumentInput}
-                          className={styles.documentInput}
-                          autoFocus
-                          onBlur={handleRenameSubmit}
-                          value={renamingDocumentNewName}
-                          onChange={(e) =>
-                            setRenamingDocumentNewName(e.target.value)
-                          }
-                        />
-                        <Text as="span" variant="S-light">
-                          .md
-                        </Text>
-                      </div>
-                    </form>
-                  ) : (
-                    <Text as="span" variant="M" className={styles.documentName}>
-                      {documentData.name}
-                    </Text>
-                  )}
-                </div>
-              </button>
-            ))}
-          </div>
-
-          <div className={`${styles.themeSwitchWrapper} ${styles.containerPadding}`}>
-            <ThemeSwitch
-              classNameContainer={styles.themeSwitch}
-              theme={theme}
-              onClick={() => onThemeToggle()}
-            />
-          </div>
+                )}
+              </div>
+            </button>
+          ))}
         </div>
-      </aside>
-    </>
+
+        <div className={`${styles.themeSwitchWrapper} ${styles.containerPadding}`}>
+          <ThemeSwitch
+            classNameContainer={styles.themeSwitch}
+            theme={theme}
+            onClick={() => onThemeToggle()}
+          />
+        </div>
+      </AlertOutsideAction>
+    </aside>
   );
 }

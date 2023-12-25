@@ -1,3 +1,4 @@
-import Heading from "./Heading";
+import Heading, { HeadingLevel } from './Heading';
 
-export default Heading
+export type { HeadingLevel };
+export default Heading;

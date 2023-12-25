@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
-import styles from './Preview.module.scss';
+import { HeadingLevel } from '../Heading';
 import Heading from '../Heading';
 import Text from '../Text';
-import { HeadingLevel } from '../Heading/Heading';
 import Blockquote from '../Blockquote';
 import InlineCode from '../InlineCode';
 import CodeBlock from '../CodeBlock';
 import MainContainerHeader from '../MainContainerHeader';
+import styles from './Preview.module.scss';
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   markdownContent: string;

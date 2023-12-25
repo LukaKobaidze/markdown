@@ -1,7 +1,7 @@
 import { createContext, useCallback } from 'react';
 import { DocumentType } from '@/types';
 import { createNewDocument, initializeDocuments } from '@/helpers';
-import useLocalStorageState from '@/hooks/useLocalStorageState';
+import { useLocalStorageState } from '@/hooks';
 
 interface Context {
   documents: DocumentType[];

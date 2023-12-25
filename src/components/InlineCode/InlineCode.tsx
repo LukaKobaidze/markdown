@@ -7,7 +7,7 @@ export default function InlineCode(props: Props) {
   const { className, children, ...restProps } = props;
 
   return (
-    <code className={`${styles.code} ${className || ''}`} {...restProps}>
+    <code className={className || ''} {...restProps}>
       <Text as="span" variant="mono-regular" className={`${styles.textContent}`}>
         {children}
       </Text>
