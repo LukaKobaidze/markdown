@@ -28,7 +28,7 @@ export default function Menu(props: Props) {
 
   const iconProps: any = {
     className: styles.itemIcon,
-    width: '22',
+    width: '16',
   };
 
   useEffect(() => {

@@ -1,0 +1,70 @@
+.document {
+  --depth: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-size: 1em;
+  width: 100%;
+  text-align: start;
+  padding-top: 13px;
+  padding-bottom: 13px;
+  padding-left: calc(var(--depth) * 20px + 24px);
+  padding-right: 14px;
+  min-height: 67px;
+
+  &--button {
+    &:hover,
+    &:focus-visible {
+      .documentName {
+        color: var(--clr-primary);
+      }
+    }
+
+    &.active {
+      background-color: var(--clr-4);
+
+      &::after {
+        content: '';
+        position: absolute;
+        height: 100%;
+        width: 2px;
+        background-color: var(--clr-3);
+        right: 0;
+      }
+    }
+  }
+
+  &Icon {
+    width: 17px;
+  }
+
+  &TextWrapper {
+    display: flex;
+    flex-direction: column;
+    margin-left: 16px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  &Name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    min-height: 23px;
+  }
+
+  &SubTitle {
+    margin-bottom: 3px;
+    color: var(--clr-document-subtitle-link);
+  }
+
+  &InputWrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  &Input {
+    display: block;
+    width: 90%;
+  }
+}

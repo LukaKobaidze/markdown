@@ -50,9 +50,25 @@
   color: var(--clr-6);
 }
 
-.buttonNewDocument {
+.buttonNewWrapper {
+  display: flex;
+  justify-content: center;
   margin-top: 29px;
+}
+
+.buttonNew {
   width: 100%;
+  padding-top: 0.4em;
+  padding-bottom: 0.4em;
+
+  &:first-child {
+    margin-right: 12px;
+  }
+
+  &Icon {
+    width: 22px;
+    height: 22px;
+  }
 }
 
 .documents {
@@ -69,80 +85,6 @@
     &:hover {
       background: var(--clr-3);
     }
-  }
-}
-.document {
-  position: relative;
-  display: flex;
-  align-items: center;
-  font-size: 1em;
-  width: 100%;
-  text-align: start;
-  padding-top: 13px;
-  padding-bottom: 13px;
-  padding-left: 24px;
-  padding-right: 14px;
-
-  &--button {
-    &::before {
-      content: '';
-      position: absolute;
-      left: 0px;
-      height: 9px;
-      width: 5px;
-      background-color: var(--clr-1);
-      border-top-right-radius: 100vw;
-      border-bottom-right-radius: 100vw;
-      transition: height 200ms, background-color 200ms;
-    }
-
-    &:hover,
-    &:focus-visible {
-      .documentName {
-        color: var(--clr-primary);
-      }
-
-      &::before {
-        height: 40%;
-      }
-    }
-
-    &.active {
-      &::before {
-        height: 75%;
-        background-color: var(--clr-primary);
-      }
-    }
-  }
-
-  &TextWrapper {
-    display: flex;
-    flex-direction: column;
-    margin-left: 16px;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
-  &Name {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    min-height: 23px;
-  }
-
-  &SubTitle {
-    margin-bottom: 3px;
-    color: var(--clr-document-subtitle-link);
-  }
-
-  &InputWrapper {
-    display: flex;
-    align-items: center;
-    width: 100%;
-  }
-
-  &Input {
-    display: block;
-    width: 90%;
   }
 }
 

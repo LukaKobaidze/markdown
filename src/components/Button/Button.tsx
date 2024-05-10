@@ -1,13 +1,19 @@
+import { forwardRef } from 'react';
 import styles from './Button.module.scss';
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+type Ref = HTMLButtonElement;
 
-export default function Button(props: Props) {
+export default forwardRef<Ref, Props>(function Button(props, ref) {
   const { className, children, ...restProps } = props;
 
   return (
-    <button className={`${styles.button} ${className || ''}`} {...restProps}>
+    <button
+      ref={ref}
+      className={`${styles.button} ${className || ''}`}
+      {...restProps}
+    >
       {children}
     </button>
   );
-}
+});

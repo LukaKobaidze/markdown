@@ -1,5 +1,6 @@
 import { IconHide, IconShow } from '@/assets';
 import styles from './MainContainerHeader.module.scss';
+import Tooltip from '../Tooltip';
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
@@ -14,9 +15,11 @@ export default function MainContainerHeader(props: Props) {
     <div className={`${styles.header} ${className || ''}`} {...restProps}>
       <span className={styles.title}>{title}</span>
 
-      <button className={styles.extendButton} onClick={() => onToggleExtend()}>
-        {isExtended ? <IconHide /> : <IconShow />}
-      </button>
+      <Tooltip position="left" text={(isExtended ? 'Unfocus ' : 'Focus ') + title} offset={10}>
+        <button className={styles.extendButton} onClick={() => onToggleExtend()}>
+          {isExtended ? <IconHide /> : <IconShow />}
+        </button>
+      </Tooltip>
     </div>
   );
 }

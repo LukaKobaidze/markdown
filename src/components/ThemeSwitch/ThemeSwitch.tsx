@@ -1,6 +1,7 @@
 import { IconDarkMode, IconLightMode } from '@/assets';
-import { ThemeType } from '@/types';
 import styles from './ThemeSwitch.module.scss';
+import { ThemeType } from '@/hooks/useTheme';
+import Tooltip from '../Tooltip';
 
 interface Props
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
@@ -16,12 +17,18 @@ export default function ThemeSwitch(props: Props) {
       <IconDarkMode
         className={`${styles.icon} ${theme === 'dark' ? styles.active : ''}`}
       />
-      <button
-        className={`${styles.switch} ${theme === 'light' ? styles.active : ''} ${
-          className || ''
-        }`}
-        {...restProps}
-      />
+      <Tooltip
+        position="top"
+        text={(theme === 'light' ? 'Dark' : 'Light') + ' Mode'}
+        offset={12}
+      >
+        <button
+          className={`${styles.switch} ${theme === 'light' ? styles.active : ''} ${
+            className || ''
+          }`}
+          {...restProps}
+        />
+      </Tooltip>
       <IconLightMode
         className={`${styles.icon} ${theme === 'light' ? styles.active : ''}`}
       />

@@ -1,56 +1,39 @@
-import { useState } from 'react';
 import MainContainerHeader from '../MainContainerHeader';
 import styles from './Markdown.module.scss';
+import { useLayoutStore } from '@/store/layout.store';
+import MarkdownTextarea from './MarkdownTextarea';
 
-interface Props extends React.HTMLAttributes<HTMLDivElement> {
-  content: string;
-  onEdit: (content: string) => void;
-  isExtended: boolean;
-  onToggleExtend: () => void;
-  textareaRef?: React.RefObject<HTMLTextAreaElement>;
-}
+interface Props extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function Markdown(props: Props) {
-  const {
-    content,
-    onEdit,
-    isExtended,
-    onToggleExtend,
-    textareaRef,
-    className,
-    ...restProps
-  } = props;
+  const { className, ...restProps } = props;
 
-  const [textareaFocusOutline, setTextareaFocusOutline] = useState(true);
-
-  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    onEdit(e.target.value);
-    setTextareaFocusOutline(false);
-  };
-
-  const handleTextareaFocus = () => {
-    setTextareaFocusOutline(true);
-  };
+  const extendedContainer = useLayoutStore((state) => state.extendedContainer);
+  const toggleMarkdownExtend = useLayoutStore((state) => state.toggleMarkdownExtend);
+  const resizerPercentage = useLayoutStore((state) => state.resizerPercentage);
+  const isResizing = useLayoutStore((state) => state.isResizing);
 
   return (
     <>
-      <div className={`${styles.container} ${className}`} {...restProps}>
+      <div
+        className={`${styles.container} ${className}`}
+        style={{
+          width:
+            extendedContainer === 'markdown'
+              ? '100%'
+              : extendedContainer === 'preview'
+              ? 0
+              : resizerPercentage + '%',
+          transition: isResizing ? undefined : 'width 200ms',
+        }}
+        {...restProps}
+      >
         <MainContainerHeader
           title="Markdown"
-          isExtended={isExtended}
-          onToggleExtend={onToggleExtend}
+          isExtended={extendedContainer === 'markdown'}
+          onToggleExtend={toggleMarkdownExtend}
         />
-        <div className={styles.textareaWrapper}>
-          <textarea
-            className={`${styles.textarea} ${
-              !textareaFocusOutline ? styles['textarea--hide-outline'] : ''
-            }`}
-            value={content}
-            onChange={handleTextareaChange}
-            onFocus={handleTextareaFocus}
-            ref={textareaRef}
-          />
-        </div>
+        <MarkdownTextarea />
       </div>
     </>
   );

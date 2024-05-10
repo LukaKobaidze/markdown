@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 
+type FunctionType = () => void;
+
 /**
  * @param name name of the data in local storage
  * @param initialState initial value of state if there is no `name` in local storage
  */
 export default function useLocalStorageState<T>(
   name: string,
-  initialState: T | (() => T)
+  initialState: T | FunctionType
 ): [T, React.Dispatch<React.SetStateAction<T>>] {
   const [state, setState] = useState<T>(() => {
     const storageItem = localStorage.getItem(name);

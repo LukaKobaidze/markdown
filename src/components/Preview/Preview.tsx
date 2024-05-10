@@ -7,16 +7,23 @@ import InlineCode from '../InlineCode';
 import CodeBlock from '../CodeBlock';
 import MainContainerHeader from '../MainContainerHeader';
 import styles from './Preview.module.scss';
+import { useDocumentsStore } from '@/store/documents.store';
+import { useLayoutStore } from '@/store/layout.store';
+import { findDocumentByPath } from '@/store/documentsStore.helpers';
 
-interface Props extends React.HTMLAttributes<HTMLDivElement> {
-  markdownContent: string;
-  isExtended: boolean;
-  onToggleExtend: () => void;
-}
+type Props = React.HTMLAttributes<HTMLDivElement>;
 
 export default function Preview(props: Props) {
-  const { markdownContent, isExtended, onToggleExtend, className, ...restProps } =
-    props;
+  const { className, ...restProps } = props;
+
+  const extendedContainer = useLayoutStore((state) => state.extendedContainer);
+  const togglePreviewExtend = useLayoutStore((state) => state.togglePreviewExtend);
+  const directory = useDocumentsStore((state) => state.directory);
+  const activeDocumentPath = useDocumentsStore((state) => state.activeDocumentPath);
+
+  const activeDocument = findDocumentByPath(activeDocumentPath, directory);
+
+  const markdown = activeDocument?.markdown || '';
 
   const handleInline = (str: string): React.ReactNode[] => {
     const output: React.ReactNode[] = [''];
@@ -86,7 +93,7 @@ export default function Preview(props: Props) {
   const previewRender = useMemo(() => {
     const output: JSX.Element[] = [];
 
-    const contentLines = markdownContent.split('\n');
+    const contentLines = markdown.split('\n');
 
     let i = 0;
     while (i < contentLines.length) {
@@ -240,14 +247,14 @@ export default function Preview(props: Props) {
     }
 
     return output;
-  }, [markdownContent]);
+  }, [markdown]);
 
   return (
     <div className={`${styles.container} ${className}`} {...restProps}>
       <MainContainerHeader
         title="Preview"
-        isExtended={isExtended}
-        onToggleExtend={onToggleExtend}
+        isExtended={extendedContainer === 'preview'}
+        onToggleExtend={togglePreviewExtend}
       />
       <div className={styles.markdownWrapper} tabIndex={0}>
         <div className={styles.markdown}>{previewRender}</div>

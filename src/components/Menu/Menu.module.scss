@@ -30,12 +30,13 @@
 
   &Icon {
     margin-right: 8px;
-    width: 22px;
+    width: 16px;
     display: flex;
   }
 
   &Text {
     font-size: 0.875rem !important;
     letter-spacing: 0 !important;
+    font-weight: 400;
   }
 }
