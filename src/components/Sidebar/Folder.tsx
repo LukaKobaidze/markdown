@@ -9,6 +9,7 @@ import {
   IconDocument,
   IconFolder,
   IconFolderOpen,
+  IconMore,
   IconRename,
 } from '@/assets';
 import Text from '../Text';
@@ -36,10 +37,7 @@ export default function Folder(props: Props) {
   const [isRenaming, setIsRenaming] = useState(false);
   const [isCreatingNode, setIsCreatingNode] = useState<NodeType | null>(null);
 
-  const handleContextMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-
+  const renderFolderMenu = (windowPos: { x: number; y: number }) => {
     renderMenu({
       items: [
         {
@@ -59,7 +57,29 @@ export default function Folder(props: Props) {
           action: () => deleteNode(path + name),
         },
       ],
-      windowPos: { x: e.clientX, y: e.clientY },
+      windowPos,
+    });
+  };
+
+  const handleContextMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    renderFolderMenu({ x: e.clientX, y: e.clientY });
+  };
+
+  const handleClickMore = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+
+    const button = (e.target as HTMLElement).closest('button');
+
+    if (!button) return;
+
+    const buttonRect = button.getBoundingClientRect();
+
+    renderFolderMenu({
+      x: buttonRect.left,
+      y: buttonRect.top + button.clientHeight,
     });
   };
 
@@ -105,6 +125,9 @@ export default function Folder(props: Props) {
             </Text>
           )}
         </div>
+        <button className={stylesDocument.documentMore} onClick={handleClickMore}>
+          <IconMore />
+        </button>
       </button>
 
       {isExpanded && (

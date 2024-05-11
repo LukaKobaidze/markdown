@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { MenuContext } from '@/context/menu.context';
 import { useDocumentsStore } from '@/store/documents.store';
-import { IconDelete, IconDocument, IconRename } from '@/assets';
+import { IconDelete, IconDocument, IconMore, IconRename } from '@/assets';
 import Text from '../Text';
 import styles from './Document.module.scss';
 import RenameInput from './RenameInput';
@@ -22,10 +22,7 @@ export default function Document(props: Props) {
   const renameNode = useDocumentsStore((state) => state.renameNode);
   const deleteNode = useDocumentsStore((state) => state.deleteNode);
 
-  const handleContextMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-
+  const renderDocumentMenu = (windowPos: { x: number; y: number }) => {
     renderMenu({
       items: [
         {
@@ -37,7 +34,29 @@ export default function Document(props: Props) {
           action: () => deleteNode(path + name),
         },
       ],
-      windowPos: { x: e.pageX, y: e.pageY },
+      windowPos: windowPos,
+    });
+  };
+
+  const handleContextMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    renderDocumentMenu({ x: e.clientX, y: e.clientY });
+  };
+
+  const handleClickMore = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+
+    const button = (e.target as HTMLElement).closest('button');
+
+    if (!button) return;
+
+    const buttonRect = button.getBoundingClientRect();
+
+    renderDocumentMenu({
+      x: buttonRect.left,
+      y: buttonRect.top + button.clientHeight,
     });
   };
 
@@ -74,6 +93,9 @@ export default function Document(props: Props) {
           </Text>
         )}
       </div>
+      <button className={styles.documentMore} onClick={handleClickMore}>
+        <IconMore />
+      </button>
     </button>
   );
 }

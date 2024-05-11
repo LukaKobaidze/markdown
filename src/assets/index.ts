@@ -9,6 +9,7 @@ export { default as IconFolderOpen } from './folder-open.svg?react';
 export { default as IconHide } from './hide.svg?react';
 export { default as IconLightMode } from './light-mode.svg?react';
 export { default as IconMenu } from './menu.svg?react';
+export { default as IconMore } from './more.svg?react';
 export { default as IconRename } from './rename.svg?react';
 export { default as IconShow } from './show.svg?react';
 export { default as Logo } from './logo.svg?react';

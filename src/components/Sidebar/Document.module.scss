@@ -14,9 +14,13 @@
 
   &--button {
     &:hover,
-    &:focus-visible {
+    &:focus-within {
       .documentName {
         color: var(--clr-primary);
+      }
+
+      .documentMore {
+        opacity: 0.5;
       }
     }
 
@@ -66,5 +70,43 @@
   &Input {
     display: block;
     width: 90%;
+  }
+
+  &More {
+    position: relative;
+    margin-left: auto;
+    opacity: 0;
+    width: 23px;
+    height: 23px;
+    transition: opacity 125ms;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 140%;
+      height: 140%;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.15);
+      opacity: 0;
+      transition: opacity 125ms;
+    }
+
+    &:hover,
+    &:focus-within {
+      opacity: 1 !important;
+    }
+
+    &:active {
+      &::before {
+        opacity: 1;
+      }
+    }
+
+    @media (hover: none) {
+      opacity: 0.5 !important;
+    }
   }
 }
