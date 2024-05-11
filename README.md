@@ -24,8 +24,8 @@
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://www.frontendmentor.io/solutions/markdown-editor-react-typescript-sass-Jd76j8yKO1)
-- Live Site URL: [Add live site URL here](https://lukakobaidze-markdown.netlify.app)
+- Solution URL: https://www.frontendmentor.io/solutions/markdown-editor-react-typescript-sass-Jd76j8yKO1
+- Live Site URL: https://lukakobaidze-markdown.netlify.app
 
 ### Built with
 
